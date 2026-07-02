@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 import pytest
 from app import main
 
@@ -18,6 +18,7 @@ from app import main
         (32, 34, [4, 4]),
         (100, 100, [21, 17]),
         (50, 60, [8, 9]),
+        (100000, 100000, [24996, 19997]),
     ],
 )
 def test_get_human_age_combinations(
@@ -33,3 +34,33 @@ def test_cat_and_dog_different_inputs() -> None:
     assert main.get_human_age(14, 15) == [0, 1]
     assert main.get_human_age(24, 23) == [2, 1]
     assert main.get_human_age(23, 24) == [1, 2]
+
+
+@pytest.mark.parametrize(
+    "cat_age, dog_age",
+    [
+        (-1, 5),
+        (5, -1),
+        (-100, -100),
+    ],
+)
+def test_get_human_age_negative_values(cat_age: int, dog_age: int) -> None:
+    with pytest.raises(ValueError):
+        main.get_human_age(cat_age, dog_age)
+
+
+@pytest.mark.parametrize(
+    "cat_age, dog_age",
+    [
+        ("15", 15),
+        (15, "15"),
+        (1.5, 15),
+        (15, 1.5),
+        (None, 15),
+        (15, None),
+        ([15], 15),
+    ],
+)
+def test_get_human_age_invalid_types(cat_age: Any, dog_age: Any) -> None:
+    with pytest.raises(TypeError):
+        main.get_human_age(cat_age, dog_age)
