@@ -21,7 +21,7 @@ from app import main
     ],
 )
 def test_get_human_age_combinations(
-    cat_age: int, 
+    cat_age: int,
     dog_age: int,
     expected: List[int],
 ) -> None:
